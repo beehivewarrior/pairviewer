@@ -13,7 +13,7 @@ export default class Header extends Component {
                 </div>
                 <div className={'row'}>
                     <div className={'col-md'}>
-                        <h3>${this.props.spread}</h3>
+                        <h3>$ {this.props.priceSpread.toString()}</h3>
                     </div>
                 </div>
                 <NavBar tabs={this.props.tabs} actions={this.props.actions} />

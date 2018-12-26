@@ -48,7 +48,7 @@ class App extends Component {
             <div className='row'>
                 <div className="col-md"> </div>
                 <div className="col-md-10">
-                    <Header tabs={this.state.tabs} actions={this.handleTabChange} spread={4.50}/>
+                    <Header tabs={this.state.tabs} actions={this.handleTabChange} priceSpread={'4.50'}/>
                 </div>
                 <div className="col-md"> </div>
             </div>
