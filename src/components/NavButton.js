@@ -10,7 +10,6 @@ export default class NavButton extends Component {
     };
 
     render() {
-        let changeTab = this.props.actions;
         return (
             <li className="nav-item">
                 <a onClick={this.handleClick} className={this.props.active === true ? "nav-link active" : "nav-link"}

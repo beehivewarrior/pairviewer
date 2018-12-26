@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import NavBar from './components/NavBar';
+import Header from './components/Header';
 
 
 class App extends Component {
@@ -16,6 +16,14 @@ class App extends Component {
             },
             {
                 name: this.props.tickers[1],
+                active: false
+            },
+            {
+                name: 'Statistics',
+                active: false
+            },
+            {
+                name: 'Historical Data',
                 active: false
             }
         ]
@@ -37,7 +45,13 @@ class App extends Component {
 
     render() {
         return (
-            <NavBar tabs={this.state.tabs} actions={this.handleTabChange}/>
+            <div className='row'>
+                <div className="col-md"> </div>
+                <div className="col-md-10">
+                    <Header tabs={this.state.tabs} actions={this.handleTabChange} spread={4.50}/>
+                </div>
+                <div className="col-md"> </div>
+            </div>
         );
     }
 }
