@@ -1,28 +1,45 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import NavBar from './components/NavBar';
+
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    state = {
+        tabs: [
+            {
+                name: 'Summary',
+                active: true
+            },
+            {
+                name: this.props.tickers[0],
+                active: false
+            },
+            {
+                name: this.props.tickers[1],
+                active: false
+            }
+        ]
+    };
+
+    handleTabChange = (index) => {
+        this.setState(previousState => {
+            for (let i = 0; i < previousState.tabs.length; i++) {
+                previousState.tabs[i]['active'] = false;
+            }
+            return {
+                tabs: previousState.tabs
+            }
+        });
+        this.setState(prevState => ({
+            score: prevState.tabs[index].active = true
+        }))
+    };
+
+    render() {
+        return (
+            <NavBar tabs={this.state.tabs} actions={this.handleTabChange}/>
+        );
+    }
 }
 
 export default App;
