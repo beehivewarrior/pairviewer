@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import Header from './components/Header';
+import Viewer from './components/Viewer';
 
 
 class App extends Component {
@@ -49,6 +50,7 @@ class App extends Component {
                 <div className="col-md"> </div>
                 <div className="col-md-10">
                     <Header tabs={this.state.tabs} actions={this.handleTabChange} priceSpread={'4.50'}/>
+                    <Viewer />
                 </div>
                 <div className="col-md"> </div>
             </div>
