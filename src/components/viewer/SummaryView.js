@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 
-import RangeBar from './RangeBar';
+import RangeBar from '../rangeBar/RangeBar';
 
 export default class SummaryView extends Component {
 
-    state={
+    state = {
         indexState: 0,
         pills: [
             {
@@ -40,10 +40,10 @@ export default class SummaryView extends Component {
 
     handlePillChange = (index) => {
         this.setState(previousState => {
-            for(let i = 0; i < previousState.pills.length; i++) {
+            for (let i = 0; i < previousState.pills.length; i++) {
                 previousState.pills[i]['active'] = false;
             }
-            return{
+            return {
                 pills: previousState.pills
             }
         });
@@ -51,7 +51,7 @@ export default class SummaryView extends Component {
             active: prevState.pills[index].active = true
         }));
         this.setState(() => {
-            return{
+            return {
                 indexState: index
             }
         });
@@ -59,33 +59,32 @@ export default class SummaryView extends Component {
 
     oneDayView = () => {
         return (
-            <img className={'img-fluid'} src={'./imgs/stockgraph1D.png'}/>
+            <img className={'img-fluid'} src={'./imgs/stockgraph1D.png'} alt="1 Day"/>
         );
     };
 
     fiveDayView = () => {
         return (
-            <img className={'img-fluid'} src={'./imgs/stockgraph5D.png'}/>
+            <img className={'img-fluid'} src={'./imgs/stockgraph5D.png'} alt="5 Day"/>
         );
     };
 
-
+    determineView = () => {
+        let onIndex = this.state.indexState;
+        if (onIndex === 0) {
+            return this.oneDayView();
+        } else if (onIndex > 0) {
+            return this.fiveDayView();
+        }
+    };
 
     render() {
-        let viewWindowVar;
-        let onIndex = this.state.indexState;
-        if(onIndex === 0){
-            viewWindowVar = this.oneDayView();
-        } else if(onIndex > 0){
-            viewWindowVar = this.fiveDayView();
-        }
-
 
         return (
             <div className={'row'}>
                 <div className={'col-md'}>
                     <RangeBar pills={this.state.pills} actions={this.handlePillChange}/>
-                    {viewWindowVar}
+                    {this.determineView()}
                 </div>
             </div>
         );
