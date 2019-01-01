@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Line} from '@nivo/line'
+import Plot from 'react-plotly.js';
 
 import RangeBar from '../rangeBar/RangeBar';
 import SecurityDataTable from './SecurityDataTable';
@@ -38,238 +38,6 @@ export default class SummaryView extends Component {
                 active: false
             }
         ],
-        chartData: [
-            {
-                "id": "japan",
-                "color": "hsl(310, 70%, 50%)",
-                "data": [
-                    {
-                        "x": "plane",
-                        "y": 91
-                    },
-                    {
-                        "x": "helicopter",
-                        "y": 225
-                    },
-                    {
-                        "x": "boat",
-                        "y": 249
-                    },
-                    {
-                        "x": "train",
-                        "y": 5
-                    },
-                    {
-                        "x": "subway",
-                        "y": 132
-                    },
-                    {
-                        "x": "bus",
-                        "y": 56
-                    },
-                    {
-                        "x": "car",
-                        "y": 260
-                    },
-                    {
-                        "x": "moto",
-                        "y": 122
-                    },
-                    {
-                        "x": "bicycle",
-                        "y": 15
-                    },
-                    {
-                        "x": "others",
-                        "y": 157
-                    }
-                ]
-            },
-            {
-                "id": "france",
-                "color": "hsl(172, 70%, 50%)",
-                "data": [
-                    {
-                        "x": "plane",
-                        "y": 103
-                    },
-                    {
-                        "x": "helicopter",
-                        "y": 263
-                    },
-                    {
-                        "x": "boat",
-                        "y": 209
-                    },
-                    {
-                        "x": "train",
-                        "y": 4
-                    },
-                    {
-                        "x": "subway",
-                        "y": 12
-                    },
-                    {
-                        "x": "bus",
-                        "y": 3
-                    },
-                    {
-                        "x": "car",
-                        "y": 230
-                    },
-                    {
-                        "x": "moto",
-                        "y": 52
-                    },
-                    {
-                        "x": "bicycle",
-                        "y": 182
-                    },
-                    {
-                        "x": "others",
-                        "y": 118
-                    }
-                ]
-            },
-            {
-                "id": "us",
-                "color": "hsl(249, 70%, 50%)",
-                "data": [
-                    {
-                        "x": "plane",
-                        "y": 177
-                    },
-                    {
-                        "x": "helicopter",
-                        "y": 256
-                    },
-                    {
-                        "x": "boat",
-                        "y": 142
-                    },
-                    {
-                        "x": "train",
-                        "y": 79
-                    },
-                    {
-                        "x": "subway",
-                        "y": 282
-                    },
-                    {
-                        "x": "bus",
-                        "y": 218
-                    },
-                    {
-                        "x": "car",
-                        "y": 206
-                    },
-                    {
-                        "x": "moto",
-                        "y": 178
-                    },
-                    {
-                        "x": "bicycle",
-                        "y": 148
-                    },
-                    {
-                        "x": "others",
-                        "y": 54
-                    }
-                ]
-            },
-            {
-                "id": "germany",
-                "color": "hsl(17, 70%, 50%)",
-                "data": [
-                    {
-                        "x": "plane",
-                        "y": 1
-                    },
-                    {
-                        "x": "helicopter",
-                        "y": 114
-                    },
-                    {
-                        "x": "boat",
-                        "y": 291
-                    },
-                    {
-                        "x": "train",
-                        "y": 85
-                    },
-                    {
-                        "x": "subway",
-                        "y": 82
-                    },
-                    {
-                        "x": "bus",
-                        "y": 158
-                    },
-                    {
-                        "x": "car",
-                        "y": 63
-                    },
-                    {
-                        "x": "moto",
-                        "y": 112
-                    },
-                    {
-                        "x": "bicycle",
-                        "y": 291
-                    },
-                    {
-                        "x": "others",
-                        "y": 155
-                    }
-                ]
-            },
-            {
-                "id": "norway",
-                "color": "hsl(344, 70%, 50%)",
-                "data": [
-                    {
-                        "x": "plane",
-                        "y": 70
-                    },
-                    {
-                        "x": "helicopter",
-                        "y": 50
-                    },
-                    {
-                        "x": "boat",
-                        "y": 109
-                    },
-                    {
-                        "x": "train",
-                        "y": 88
-                    },
-                    {
-                        "x": "subway",
-                        "y": 289
-                    },
-                    {
-                        "x": "bus",
-                        "y": 80
-                    },
-                    {
-                        "x": "car",
-                        "y": 10
-                    },
-                    {
-                        "x": "moto",
-                        "y": 101
-                    },
-                    {
-                        "x": "bicycle",
-                        "y": 119
-                    },
-                    {
-                        "x": "others",
-                        "y": 182
-                    }
-                ]
-            }
-        ]
     };
 
     handlePillChange = (index) => {
@@ -310,6 +78,43 @@ export default class SummaryView extends Component {
         } else if (onIndex > 0) {
             return this.fiveDayView();
         }
+    };
+
+    dateMaker = (number) => {
+        let datesToReturn = [];
+        for(let i =0; i<(number+1); i++ ){
+            let a = '2018-12-';
+            let b = 'T00:00:00';
+            let c = a + i + b;
+            datesToReturn.push(new Date(c));
+        }
+        return datesToReturn;
+    };
+
+    priceMaker = (number) => {
+        let pricesToReturn = [];
+        for(let i = 0; i < (number + 1); i++){
+            pricesToReturn.push((Math.random() * 1000).toFixed(2));
+        }
+        return pricesToReturn;
+    };
+
+    differenceMaker = (x1, x2) => {
+        let diffToReturn = [];
+        for(let i =0; i < x1.length; i++){
+            let diff;
+
+            if(x1[i] > x2[i]){
+                diff = x1[i] - x2[i];
+            } else if(x1[i] < x2[i]){
+                diff = x2[i] - x1[i];
+            } else {
+                diff = 0;
+            }
+            diff = Math.abs(diff);
+            diffToReturn.push(diff)
+        }
+        return diffToReturn;
     };
 
     render() {
@@ -364,37 +169,54 @@ export default class SummaryView extends Component {
                 stat: 3.85
             }
         ];
+        let date1 = new Date('2018-12-17T03:24:00');
+        let date2 = new Date('2018-12-18T03:24:00');
+        let date3 = new Date('2018-12-19T03:24:00');
+        let x1 = this.dateMaker(25);
+
+        let y1 = this.priceMaker(25);
+        let y2 = this.priceMaker(25);
+        let y3 =  this.differenceMaker(y1, y2);
+
+        let data1 = {
+            x: x1,
+            y: y1,
+            name:'Gold',
+            type: 'scatter',
+            mode: 'lines',
+            line: {color: '#17BECF'}
+        };
+
+        let data2 = {
+            x: x1,
+            y: y2,
+            name: 'Silver',
+            type: 'scatter',
+            mode: 'lines',
+            line: {color: '#950714'}
+        };
+
+        let data3 = {
+            x: x1,
+            y: y3,
+            name: 'Spread',
+            type: 'scatter',
+            mode: 'lines',
+            line: {color: '#614051'}
+        };
 
         return (
+
             <div className={'row'}>
                 <div className={'col-md'}>
                     <RangeBar pills={this.state.pills} actions={this.handlePillChange}/>
                     {this.determineView()}
                     <SecurityDataTable data={firstHalfData}/>
-                    <Line
-                        width={900}
-                        height={400}
-                        margin={{
-                            top: 20,
-                            right: 20,
-                            bottom: 60,
-                            left: 80
-                        }}
-                        data={[{
-                            id: 'fake corp. A', color: '#547687', data: [
-                                {x: '#0', y: 0.4},
-                                {x: '#1', y: 0.5},
-                                {x: '#2', y: 0.7},
-                            ]
-                        }]}
-                        animate
-                        enableArea
-                        yScale={{type: 'linear', stacked: true}}
-                        curve="linear"
-                        dotSize={8}
-                        dotColor="#fff"
-                        dotBorderWidth={2}
-                    />
+                   <Plot data={[
+                       data1, data2, data3
+                   ]}
+                         responsive={true}
+                         layout={ {title: 'A Fancy Plot'} }/>
                 </div>
             </div>
         );

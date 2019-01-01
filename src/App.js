@@ -5,6 +5,8 @@ import Viewer from './components/viewer/Viewer';
 
 
 
+
+
 class App extends Component {
     state = {
         tabs: [
@@ -54,7 +56,6 @@ class App extends Component {
                     <Viewer />
                 </div>
                 <div className="col-md"> </div>
-
             </div>
         );
     }

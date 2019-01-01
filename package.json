@@ -3,10 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@amcharts/amcharts4": "^4.0.13",
     "@nivo/line": "^0.52.0",
+    "d3": "^5.7.0",
+    "echarts": "^4.2.0-rc.2",
+    "papaparse": "^4.6.2",
+    "plotly.js": "^1.43.1",
+    "plotly.js-dist": "^1.43.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "react-scripts": "2.1.2"
+    "react-plotly.js": "^2.2.0",
+    "react-scripts": "2.1.2",
+    "recharts": "^1.4.2",
+    "victory": "^31.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
