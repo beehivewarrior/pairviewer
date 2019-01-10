@@ -6,39 +6,42 @@ import SecurityDataTable from './SecurityDataTable';
 
 export default class SummaryView extends Component {
 
-    state = {
-        indexState: 0,
-        pills: [
-            {
-                name: "1D",
-                active: true
-            },
-            {
-                name: "5D",
-                active: false
-            },
-            {
-                name: "1M",
-                active: false
-            },
-            {
-                name: "3M",
-                active: false
-            },
-            {
-                name: "YTD",
-                active: false
-            },
-            {
-                name: "1Y",
-                active: false
-            },
-            {
-                name: "5Y",
-                active: false
-            }
-        ],
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            indexState: 0,
+            pills: [
+                {
+                    name: "1D",
+                    active: true
+                },
+                {
+                    name: "5D",
+                    active: false
+                },
+                {
+                    name: "1M",
+                    active: false
+                },
+                {
+                    name: "3M",
+                    active: false
+                },
+                {
+                    name: "YTD",
+                    active: false
+                },
+                {
+                    name: "1Y",
+                    active: false
+                },
+                {
+                    name: "5Y",
+                    active: false
+                }
+            ],
+        };
+    }
 
     handlePillChange = (index) => {
         this.setState(previousState => {
@@ -82,7 +85,7 @@ export default class SummaryView extends Component {
 
     dateMaker = (number) => {
         let datesToReturn = [];
-        for(let i =0; i<(number+1); i++ ){
+        for (let i = 0; i < (number + 1); i++) {
             let a = '2018-12-';
             let b = 'T00:00:00';
             let c = a + i + b;
@@ -93,7 +96,7 @@ export default class SummaryView extends Component {
 
     priceMaker = (number) => {
         let pricesToReturn = [];
-        for(let i = 0; i < (number + 1); i++){
+        for (let i = 0; i < (number + 1); i++) {
             pricesToReturn.push((Math.random() * 1000).toFixed(2));
         }
         return pricesToReturn;
@@ -101,12 +104,12 @@ export default class SummaryView extends Component {
 
     differenceMaker = (x1, x2) => {
         let diffToReturn = [];
-        for(let i =0; i < x1.length; i++){
+        for (let i = 0; i < x1.length; i++) {
             let diff;
 
-            if(x1[i] > x2[i]){
+            if (x1[i] > x2[i]) {
                 diff = x1[i] - x2[i];
-            } else if(x1[i] < x2[i]){
+            } else if (x1[i] < x2[i]) {
                 diff = x2[i] - x1[i];
             } else {
                 diff = 0;
@@ -169,19 +172,16 @@ export default class SummaryView extends Component {
                 stat: 3.85
             }
         ];
-        let date1 = new Date('2018-12-17T03:24:00');
-        let date2 = new Date('2018-12-18T03:24:00');
-        let date3 = new Date('2018-12-19T03:24:00');
         let x1 = this.dateMaker(25);
 
         let y1 = this.priceMaker(25);
         let y2 = this.priceMaker(25);
-        let y3 =  this.differenceMaker(y1, y2);
+        let y3 = this.differenceMaker(y1, y2);
 
         let data1 = {
             x: x1,
             y: y1,
-            name:'Gold',
+            name: 'Gold',
             type: 'scatter',
             mode: 'lines',
             line: {color: '#17BECF'}
@@ -208,15 +208,22 @@ export default class SummaryView extends Component {
         return (
 
             <div className={'row'}>
-                <div className={'col-md'}>
+                <div className={'col-md w-100'}>
                     <RangeBar pills={this.state.pills} actions={this.handlePillChange}/>
-                    {this.determineView()}
-                    <SecurityDataTable data={firstHalfData}/>
-                   <Plot data={[
-                       data1, data2, data3
-                   ]}
-                         responsive={true}
-                         layout={ {title: 'A Fancy Plot'} }/>
+                    <div className={'container-fluid'}>
+                        <div className={'row'}>
+                            <div className={'col'}>
+                                <Plot data={[
+                                    data1, data2, data3
+                                ]}
+                                      layout={{autosize: true}}
+                                      useResizeHandler={true}
+                                      style={{width: "100%"}}
+                                />
+                            </div>
+                        </div>
+                        <SecurityDataTable data={firstHalfData}/>
+                    </div>
                 </div>
             </div>
         );
