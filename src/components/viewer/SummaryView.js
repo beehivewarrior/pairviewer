@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Plot from 'react-plotly.js';
-import * as Daj from 'datejs';
+import moment from 'moment';
 
 import RangeBar from '../rangeBar/RangeBar';
 import SecurityDataTable from './SecurityDataTable';
@@ -14,32 +14,39 @@ export default class SummaryView extends Component {
             pills: [
                 {
                     name: "5D",
-                    active: true
+                    active: true,
+                    days: 5
                 },
                 {
                     name: "1M",
-                    active: false
+                    active: false,
+                    days: (moment().subtract(moment.duration(1, "months")).diff(moment(), "days") * -1)
                 },
                 {
                     name: "3M",
-                    active: false
+                    active: false,
+                    days: (moment().subtract(moment.duration(3, "months")).diff(moment(), "days") * -1)
+
                 },
                 {
                     name: "YTD",
-                    active: false
+                    active: false,
+                    days: (moment().subtract(moment.duration(24, "months")).diff(moment(), "days") * -1)
                 },
                 {
                     name: "1Y",
-                    active: false
+                    active: false,
+                    days: (moment().subtract(moment.duration(12, "months")).diff(moment(), "days") * -1)
                 },
                 {
-                    name: "5Y",
-                    active: false
+                    name: "2Y",
+                    active: false,
+                    days: (moment().subtract(moment.duration(24, "months")).diff(moment(), "days") * -1),
                 }
             ],
             days: 5,
         };
-    }
+    };
 
     handlePillChange = (index) => {
         this.setState(previousState => {
@@ -58,6 +65,10 @@ export default class SummaryView extends Component {
                 indexState: index
             }
         });
+        console.log(this.state.pills[index].days);
+        this.setState(prevState => ({
+            days: prevState.pills[index].days
+        }))
     };
 
     oneDayView = () => {
@@ -83,15 +94,31 @@ export default class SummaryView extends Component {
 
     dateMaker = () => {
         let datesToReturn = [];
-        for (let i = 365; i > 0; i--) {
-            datesToReturn.push((-i).days().fromNow());
+        let daysNeeded = this.state.days;
+        if (daysNeeded < 31) {
+            for (let i = daysNeeded; i > 0; i--) {
+                let daytoSend = moment().subtract(i, "days");
+                let millis = daytoSend.valueOf();
+                let thisNewDate = new Date(millis);
+                datesToReturn.push(thisNewDate);
+            }
+        } else {
+            let i = daysNeeded < 93 ? Math.round(daysNeeded / 7) : 52;
+            for (i; i > 0; i--) {
+                let daytoSend = moment().subtract(i, "weeks");
+                let millis = daytoSend.valueOf();
+                let thisNewDate = new Date(millis);
+                datesToReturn.push(thisNewDate);
+            }
         }
         return datesToReturn;
     };
 
     priceMaker = () => {
         let pricesToReturn = [];
-        for (let i = 365; i > 0; i--) {
+        let daysNeeded = this.state.days;
+        let i = daysNeeded < 93 ? Math.round(daysNeeded / 7) : 52;
+        for (let i = daysNeeded; i > 0; i--) {
             pricesToReturn.push((Math.random() * 1000).toFixed(2));
         }
         return pricesToReturn;
@@ -167,15 +194,15 @@ export default class SummaryView extends Component {
                 stat: 3.85
             }
         ];
-        let x1 = this.dateMaker(25);
+        let datesToDisplay = this.props.dateRange ? this.props.dateRange : this.dateMaker(25);
 
-        let y1 = this.priceMaker(25);
-        let y2 = this.priceMaker(25);
-        let y3 = this.differenceMaker(y1, y2);
+        let securityA = this.props.securities ? this.props.securities[0] : this.priceMaker(25);
+        let securityB = this.props.securities ? this.props.securities[1] : this.priceMaker(25);
+        let spread = this.differenceMaker(securityA, securityB);
 
         let data1 = {
-            x: x1.slice(-this.state.days),
-            y: y1.slice(-this.state.days),
+            x: datesToDisplay.slice(-this.state.days),
+            y: securityA.slice(-this.state.days),
             name: 'Gold',
             type: 'scatter',
             mode: 'lines',
@@ -183,8 +210,8 @@ export default class SummaryView extends Component {
         };
 
         let data2 = {
-            x: x1.slice(-this.state.days),
-            y: y2.slice(-this.state.days),
+            x: datesToDisplay.slice(-this.state.days),
+            y: securityB.slice(-this.state.days),
             name: 'Silver',
             type: 'scatter',
             mode: 'lines',
@@ -192,8 +219,8 @@ export default class SummaryView extends Component {
         };
 
         let data3 = {
-            x: x1.slice(-this.state.days),
-            y: y3.slice(-this.state.days),
+            x: datesToDisplay.slice(-this.state.days),
+            y: spread.slice(-this.state.days),
             name: 'Spread',
             type: 'scatter',
             mode: 'lines',

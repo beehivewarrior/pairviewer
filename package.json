@@ -13,6 +13,7 @@
     "echarts": "^4.2.0-rc.2",
     "eslint-plugin-react": "^7.12.3",
     "fast-levenshtein": "^2.0.6",
+    "moment": "^2.23.0",
     "optionator": "^0.8.2",
     "papaparse": "^4.6.3",
     "plotly.js": "^1.43.2",
