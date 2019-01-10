@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Plot from 'react-plotly.js';
+import * as Daj from 'datejs';
 
 import RangeBar from '../rangeBar/RangeBar';
 import SecurityDataTable from './SecurityDataTable';
@@ -12,12 +13,8 @@ export default class SummaryView extends Component {
             indexState: 0,
             pills: [
                 {
-                    name: "1D",
-                    active: true
-                },
-                {
                     name: "5D",
-                    active: false
+                    active: true
                 },
                 {
                     name: "1M",
@@ -40,6 +37,7 @@ export default class SummaryView extends Component {
                     active: false
                 }
             ],
+            days: 5,
         };
     }
 
@@ -83,20 +81,17 @@ export default class SummaryView extends Component {
         }
     };
 
-    dateMaker = (number) => {
+    dateMaker = () => {
         let datesToReturn = [];
-        for (let i = 0; i < (number + 1); i++) {
-            let a = '2018-12-';
-            let b = 'T00:00:00';
-            let c = a + i + b;
-            datesToReturn.push(new Date(c));
+        for (let i = 365; i > 0; i--) {
+            datesToReturn.push((-i).days().fromNow());
         }
         return datesToReturn;
     };
 
-    priceMaker = (number) => {
+    priceMaker = () => {
         let pricesToReturn = [];
-        for (let i = 0; i < (number + 1); i++) {
+        for (let i = 365; i > 0; i--) {
             pricesToReturn.push((Math.random() * 1000).toFixed(2));
         }
         return pricesToReturn;
@@ -179,30 +174,30 @@ export default class SummaryView extends Component {
         let y3 = this.differenceMaker(y1, y2);
 
         let data1 = {
-            x: x1,
-            y: y1,
+            x: x1.slice(-this.state.days),
+            y: y1.slice(-this.state.days),
             name: 'Gold',
             type: 'scatter',
             mode: 'lines',
-            line: {color: '#17BECF'}
+            line: {color: '#ee7326'}
         };
 
         let data2 = {
-            x: x1,
-            y: y2,
+            x: x1.slice(-this.state.days),
+            y: y2.slice(-this.state.days),
             name: 'Silver',
             type: 'scatter',
             mode: 'lines',
-            line: {color: '#950714'}
+            line: {color: '#d45479'}
         };
 
         let data3 = {
-            x: x1,
-            y: y3,
+            x: x1.slice(-this.state.days),
+            y: y3.slice(-this.state.days),
             name: 'Spread',
             type: 'scatter',
             mode: 'lines',
-            line: {color: '#614051'}
+            line: {color: '#825e91'}
         };
 
         return (
@@ -222,6 +217,7 @@ export default class SummaryView extends Component {
                                 />
                             </div>
                         </div>
+
                         <SecurityDataTable data={firstHalfData}/>
                     </div>
                 </div>
